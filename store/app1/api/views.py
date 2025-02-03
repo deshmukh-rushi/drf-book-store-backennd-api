@@ -6,8 +6,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 # from django.utils.decorators import method_decorator
 # from django.views.decorators.csrf import csrf_exempt
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from app1.permission import IsReadOnlyOrReview
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAdminUser
+from .permission import IsStaffOrReadOnly
 # Create your views here.
 
 #ModelViewSet
@@ -17,7 +17,7 @@ class AuthorModelViewSet(viewsets.ModelViewSet):
     serializer_class = AuthorSerializer
 
     search_fields = ['id','name']
-    permission_classes = [IsReadOnlyOrReview]
+    permission_classes = [IsStaffOrReadOnly]
 
 
 
@@ -26,7 +26,9 @@ class BookModelViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
 
     search_fields = ['id','title']
-    permission_classes = [IsReadOnlyOrReview]
+    permission_classes = [IsStaffOrReadOnly]
+
+   
     
 
 
@@ -35,7 +37,7 @@ class GenreModelViewSet(viewsets.ModelViewSet):
     serializer_class = GenreSerializer
 
     search_fields = ['id','name']
-    permission_classes = [IsReadOnlyOrReview]
+    permission_classes = [IsStaffOrReadOnly]
 
 
 
@@ -44,7 +46,7 @@ class PurchaseModelViewSet(viewsets.ModelViewSet):
     serializer_class = PurchaseSerializer
 
     search_fields = ['id']
-    permission_classes = [IsReadOnlyOrReview]
+    permission_classes = [IsAdminUser]
 
 
 class ReviewModelViewSet(viewsets.ModelViewSet):
@@ -69,5 +71,11 @@ class ReviewModelViewSet(viewsets.ModelViewSet):
         if not Purchase.objects.filter(buyer=user, book=book).exists():
             raise serializers.ValidationError("You can only review books you have purchased.")
         
+
+    def get_queryset(self):
+        book_id = self.kwargs.get('book_id')
+        if book_id:
+            return Review.objects.filter(book_id=book_id)
+        return Review.objects.all()
         # Save the review
         serializer.save(user=user)

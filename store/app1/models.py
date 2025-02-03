@@ -40,7 +40,7 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
-    genre = models.ForeignKey(Genre, related_name='books', on_delete=models.CASCADE)
+    genre = models.ManyToManyField(Genre, related_name='books')
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)
@@ -73,10 +73,19 @@ class Purchase(models.Model):
 
 
 class Review(models.Model):
+    class ReviewChoices(models.IntegerChoices):
+        
+        ONE = 1, "★☆☆☆☆ (1)"
+        TWO = 2, "★★☆☆☆ (2)"
+        THREE = 3, "★★★☆☆ (3)"
+        FOUR = 4, "★★★★☆ (4)"
+        FIVE = 5, "★★★★★ (5)"
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    comment = models.TextField()
-    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField(null=True,blank=True)
+    rating = models.IntegerField(choices=ReviewChoices.choices)
+   # rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)])
     # rating = models.IntegerField(
     #     default=1,
     #     validators=[

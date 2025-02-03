@@ -1,18 +1,28 @@
 from rest_framework import serializers
 from app1.models import Author,Book,Genre,Purchase,Review
 from django.contrib.auth.models import User
+from rest_framework.reverse import reverse
 
 
 #Nested Serializer
 
 
+from rest_framework import serializers
+from rest_framework.reverse import reverse
+from app1.models import Book
+
 class BookSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source='author.name', read_only=True)
     genre = serializers.CharField(source='genre.name', read_only=True)
+    reviews_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Book
-        fields = ['id','title','author','genre','description','price','stock','created_at','updated_at']
+        fields = ['id', 'title', 'author', 'genre', 'description', 'price', 'stock', 'created_at', 'updated_at', 'reviews_url']
 
+    def get_reviews_url(self, obj):
+        # Now, this will generate the URL using 'review-list' which is registered above
+        return reverse('review-list', request=self.context.get('request'), kwargs={'book_id': obj.id})
 
 
 
