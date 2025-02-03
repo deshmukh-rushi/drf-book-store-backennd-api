@@ -1,6 +1,7 @@
 # Bookstore API
 
-This is a simple Django-based Bookstore API that allows users to manage books in an online bookstore. The project is containerized using Docker for easier deployment and setup.
+This is a simple Django-based Bookstore API that allows users to manage books in an online bookstore. 
+The project is containerized using Docker for easier deployment and setup.
 
 ## Prerequisites
 
@@ -20,8 +21,6 @@ cd drf-book-store-backennd-api
 
 Activate the virtual environment
 
-run this command :- 
-        pip install -r requirement.txt
 
 
 2. Configuration
