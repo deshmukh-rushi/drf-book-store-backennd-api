@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  web:
+    build: .
+    container_name: bookstore-api
+    command: >
+      sh -c "python manage.py wait_for_db && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    working_dir: /app/store
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy  # Ensures DB is ready before Django starts
+    environment:
+      DEBUG: "True"
+      DJANGO_SECRET_KEY: "your-secret-key"
+      DATABASE_NAME: "bookstore"
+      DATABASE_USER: "postgres"
+      DATABASE_PASSWORD: "gurudevDatta"
+      DATABASE_HOST: "db"
+      DATABASE_PORT: "5432"
+
+  db:
+    image: postgres:15
+    container_name: bookstore-db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: bookstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: gurudevDatta
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+volumes:
+  postgres_data:

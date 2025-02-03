@@ -78,17 +78,19 @@ WSGI_APPLICATION = 'store.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+import os
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', 
-        'NAME': 'bookstore',                        
-        'USER': 'postgres',                     
-        'PASSWORD': 'gurudevDatta',            
-        'HOST': 'localhost',                        
-        'PORT': '5432',                             
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DATABASE_NAME', 'bookstore'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'gurudevDatta'),
+        'HOST': os.getenv('DATABASE_HOST', 'db'),  # This must match the service name in docker-compose.yml
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
+
 
 
 # Password validation
