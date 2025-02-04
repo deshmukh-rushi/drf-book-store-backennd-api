@@ -4,12 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 
 
-#Nested Serializer
-
-
-from rest_framework import serializers
-from rest_framework.reverse import reverse
-from app1.models import Book
+#hyperlinked Serializer
 
 class BookSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source='author.name', read_only=True)
@@ -27,6 +22,8 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 ##########################################################
+
+#nested serializer
 class BookTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book

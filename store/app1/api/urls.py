@@ -11,9 +11,11 @@ router.register('GenreAPI', views.GenreModelViewSet, basename='genre')
 router.register('PurchaseAPI', views.PurchaseModelViewSet, basename='purchase')
 router.register('ReviewAPI', views.ReviewModelViewSet, basename='review')
 
-# Define the review URL pattern with book_id as parameter
+
 urlpatterns = [
     path('', include(router.urls)),
+    # review URL pattern with book_id as parameter
     path('review/<int:book_id>/', views.ReviewModelViewSet.as_view({'get': 'list'}), name='review-list'),
+    #for session auth
     path('auth/', include('rest_framework.urls')),
 ]

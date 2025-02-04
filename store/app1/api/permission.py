@@ -8,7 +8,7 @@ class IsStaffOrReadOnly(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        # If the request method is a safe method (like GET, HEAD, or OPTIONS), allow it for anyone
+        # If the request method is a safe method allow it for anyone
         if request.method in permissions.SAFE_METHODS:
             return True
 
