@@ -85,8 +85,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DATABASE_NAME', 'bookstore'),
         'USER': os.getenv('DATABASE_USER', 'postgres'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'gurudevDatta'),
-        'HOST': os.getenv('DATABASE_HOST', 'db'),  # This must match the service name in docker-compose.yml
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'xoropsql'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),  # This must match the service name in docker-compose.yml
         'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
